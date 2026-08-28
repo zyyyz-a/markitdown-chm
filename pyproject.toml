@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "markitdown-chm"
+version = "0.1.0"
+description = "Secure CHM-to-Markdown support for Microsoft's MarkItDown"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "zyyyz-a" }]
+keywords = ["chm", "markdown", "markitdown", "documentation", "migration"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Documentation",
+  "Topic :: Text Processing :: Markup",
+]
+dependencies = [
+  "beautifulsoup4>=4.12",
+  "markdownify>=0.14",
+  "markitdown>=0.1.3,<0.2",
+  "pylibmspack>=0.4.0,<0.5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "mypy>=1.15",
+  "pytest>=8.3",
+  "pytest-cov>=6.0",
+  "ruff>=0.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/zyyyz-a/markitdown-chm"
+Issues = "https://github.com/zyyyz-a/markitdown-chm/issues"
+Source = "https://github.com/zyyyz-a/markitdown-chm"
+"Upstream issue" = "https://github.com/microsoft/markitdown/issues/14"
+
+[project.entry-points."markitdown.plugin"]
+chm = "markitdown_chm"
+
+[project.scripts]
+markitdown-chm = "markitdown_chm.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/markitdown_chm"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --cov=markitdown_chm --cov-report=term-missing --cov-fail-under=90"
+testpaths = ["tests"]
+markers = ["integration: exercises a real CHM archive"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF", "SIM", "S"]
+ignore = ["S603"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["markitdown_chm"]
+follow_imports = "skip"
+disallow_subclassing_any = false
+
+[[tool.mypy.overrides]]
+module = ["bs4.*", "markdownify.*", "pylibmspack.*"]
+ignore_missing_imports = true
