@@ -91,4 +91,3 @@ asset directory. Password-protected or corrupt archives are rejected.
 `markitdown-chm` is MIT licensed. Its `pylibmspack` dependency is MIT licensed
 and its wheels bundle `libmspack` under LGPL-2.1; see the dependency's package
 metadata for corresponding source and replacement instructions.
-
